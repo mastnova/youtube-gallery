@@ -1,12 +1,16 @@
 var React = require('react');
 var AppStore = require('../stores/AppStore');
+var AppAPI = require('../utils/AppAPI.js');
 var AddForm = require('./AddForm');
+var VideoList = require('./VideoList');
 
 function getAppState(){
   return {
     videos: AppStore.getVideos()
   }
 }
+
+AppAPI.getVideos();
 
 var App = React.createClass({
   getInitialState: function(){
@@ -22,10 +26,10 @@ var App = React.createClass({
   },
 
   render: function(){
-    console.log(this.state.videos);
     return(
       <div>
         <AddForm />
+        <VideoList videos={this.state.videos} />
       </div>
     );
   },
