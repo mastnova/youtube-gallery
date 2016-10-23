@@ -6,7 +6,7 @@ var AddForm = React.createClass({
     return(
       <div className="add-form">
         <panel className="c12">
-          <h3>Add Video</h3>
+          <h3>You<span className="logo">Tube</span> Gallery</h3>
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
               <label>Video Title</label>
@@ -23,7 +23,7 @@ var AddForm = React.createClass({
               <br />
               <textarea className="form-control" ref="description"></textarea>
             </div>
-            <button type="submit" className="button">Add</button>
+            <button type="submit" className="btn-red">Add Video</button>
           </form>
         </panel>
       </div>
@@ -37,7 +37,9 @@ var AddForm = React.createClass({
       video_id: this.refs.video_id.value.trim(),
       description: this.refs.description.value.trim()
     };
-    AppActions.saveVideo(video);
+    if(video.title && video.video_id) {
+      AppActions.saveVideo(video);
+    }
   }
 });
 

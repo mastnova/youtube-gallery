@@ -2,17 +2,49 @@ body {
   margin-top: 30px;
 }
 
+h3 {
+  text-align: center;
+}
+
+.logo {
+  background-color: #f00;
+  color: #fff;
+  border-radius: 15px;
+  padding: 5px;
+}
+
 .add-form {
   padding: 20px;
 }
 
+.form-group {
+  width: 400px;
+  margin: 0 auto;
+}
+
 input[type=text], textarea {
-  width: 500px;
+  width: 400px;
   padding: 4px;
+}
+
+textarea {
+  resize: none;
+}
+
+.btn-red {
+  display: block;
+  margin: 13px auto 0;
+}
+
+h5 {
+  margin-bottom: 5px;
+  text-align: center;
 }
 
 .delete a {
   color: red;
-  font-size: 15px;
+  font-size: 20px;
   text-decoration: none;
+  font-weight: bold;
+  margin-left: 15px;
 }

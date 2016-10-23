@@ -20074,7 +20074,7 @@ var AddForm = React.createClass({displayName: "AddForm",
     return(
       React.createElement("div", {className: "add-form"}, 
         React.createElement("panel", {className: "c12"}, 
-          React.createElement("h3", null, "Add Video"), 
+          React.createElement("h3", null, "You", React.createElement("span", {className: "logo"}, "Tube"), " Gallery"), 
           React.createElement("form", {onSubmit: this.onSubmit}, 
             React.createElement("div", {className: "form-group"}, 
               React.createElement("label", null, "Video Title"), 
@@ -20091,7 +20091,7 @@ var AddForm = React.createClass({displayName: "AddForm",
               React.createElement("br", null), 
               React.createElement("textarea", {className: "form-control", ref: "description"})
             ), 
-            React.createElement("button", {type: "submit", className: "button"}, "Add")
+            React.createElement("button", {type: "submit", className: "btn-red"}, "Add Video")
           )
         )
       )
@@ -20105,7 +20105,9 @@ var AddForm = React.createClass({displayName: "AddForm",
       video_id: this.refs.video_id.value.trim(),
       description: this.refs.description.value.trim()
     };
-    AppActions.saveVideo(video);
+    if(video.title && video.video_id) {
+      AppActions.saveVideo(video);
+    }
   }
 });
 
