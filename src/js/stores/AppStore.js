@@ -18,6 +18,9 @@ var AppStore = assign({}, EventEmitter.prototype, {
   setVideos: function(videos){
     _videos = videos;
   },
+  removeVideo: function(videoId){
+    _videos = _videos.filter(video => video.id !== videoId);
+  },
   emitChange: function(){
     this.emit(CHANGE_EVENT);
   },
@@ -41,6 +44,11 @@ AppDispatcher.register(function(payload){
 
     case AppConstants.RECEIVE_VIDEOS:
       AppStore.setVideos(action.videos);
+      break;
+
+    case AppConstants.REMOVE_VIDEO:
+      AppStore.removeVideo(action.videoId);
+      AppAPI.removeVideo(action.videoId);
       break;
 
     default:

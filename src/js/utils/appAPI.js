@@ -7,6 +7,7 @@ module.exports = {
   saveVideo: function(video) {
     firebaseRef.push(video);
   },
+
   getVideos: function() {
     firebaseRef.once('value', function(snapshot){
       var videos = [];
@@ -21,5 +22,10 @@ module.exports = {
       });
       AppActions.receiveVideos(videos);
     });
+  },
+
+  removeVideo: function(videoId) {
+    var firebaseRef = new Firebase('https://utgall-18619.firebaseio.com/videos/'+videoId);
+    firebaseRef.remove();
   }
 }

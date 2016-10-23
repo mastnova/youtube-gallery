@@ -20048,10 +20048,18 @@ var AppActions = {
       video: video
     });
   },
+
   receiveVideos: function(videos) {
     AppDispatcher.handleViewAction({
       actionType: AppConstants.RECEIVE_VIDEOS,
       videos: videos
+    });
+  },
+
+  removeVideo: function(videoId) {
+    AppDispatcher.handleViewAction({
+      actionType: AppConstants.REMOVE_VIDEO,
+      videoId: videoId
     });
   }
 }
@@ -20148,23 +20156,33 @@ var App = React.createClass({displayName: "App",
 module.exports = App;
 },{"../stores/AppStore":173,"../utils/AppAPI.js":174,"./AddForm":166,"./VideoList":169,"react":164}],168:[function(require,module,exports){
 var React = require('react');
+var AppActions = require('../actions/AppActions');
 
 var Video = React.createClass({displayName: "Video",
   render: function(){
     var link = "https://www.youtube.com/embed/"+this.props.video.video_id;
     return (
       React.createElement("div", {className: "c4"}, 
-        React.createElement("h5", null, this.props.video.title), 
+        React.createElement("h5", null, 
+          this.props.video.title, 
+          React.createElement("span", {className: "delete"}, 
+            React.createElement("a", {onClick: this.onDelete.bind(this, this.props.video.id), href: "#"}, "X")
+          )
+        ), 
         React.createElement("iframe", {width: "360", height: "285", src: link, frameBorder: "0", allowFullScreen: true}), 
         React.createElement("p", null, this.props.video.description)
       )
     );
+  },
+
+  onDelete: function(videoId) {
+    AppActions.removeVideo(videoId);
   }
 });
 
 module.exports = Video;
 
-},{"react":164}],169:[function(require,module,exports){
+},{"../actions/AppActions":165,"react":164}],169:[function(require,module,exports){
 var React = require('react');
 var Video = require('./Video');
 
@@ -20187,7 +20205,8 @@ module.exports = VideoList;
 },{"./Video":168,"react":164}],170:[function(require,module,exports){
 module.exports = {
   SAVE_VIDEO: 'SAVE_VIDEO',
-  RECEIVE_VIDEOS: 'RECEIVE_VIDEOS'
+  RECEIVE_VIDEOS: 'RECEIVE_VIDEOS',
+  REMOVE_VIDEO: 'REMOVE_VIDEO'
 }
 },{}],171:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
@@ -20237,6 +20256,9 @@ var AppStore = assign({}, EventEmitter.prototype, {
   setVideos: function(videos){
     _videos = videos;
   },
+  removeVideo: function(videoId){
+    _videos = _videos.filter(video => video.id !== videoId);
+  },
   emitChange: function(){
     this.emit(CHANGE_EVENT);
   },
@@ -20262,6 +20284,11 @@ AppDispatcher.register(function(payload){
       AppStore.setVideos(action.videos);
       break;
 
+    case AppConstants.REMOVE_VIDEO:
+      AppStore.removeVideo(action.videoId);
+      AppAPI.removeVideo(action.videoId);
+      break;
+
     default:
       return true;
   }
@@ -20280,6 +20307,7 @@ module.exports = {
   saveVideo: function(video) {
     firebaseRef.push(video);
   },
+
   getVideos: function() {
     firebaseRef.once('value', function(snapshot){
       var videos = [];
@@ -20294,6 +20322,11 @@ module.exports = {
       });
       AppActions.receiveVideos(videos);
     });
+  },
+
+  removeVideo: function(videoId) {
+    var firebaseRef = new Firebase('https://utgall-18619.firebaseio.com/videos/'+videoId);
+    firebaseRef.remove();
   }
 }
 },{"../actions/AppActions":165,"firebase":29}],175:[function(require,module,exports){
@@ -20306,6 +20339,7 @@ module.exports = {
   saveVideo: function(video) {
     firebaseRef.push(video);
   },
+
   getVideos: function() {
     firebaseRef.once('value', function(snapshot){
       var videos = [];
@@ -20320,6 +20354,11 @@ module.exports = {
       });
       AppActions.receiveVideos(videos);
     });
+  },
+
+  removeVideo: function(videoId) {
+    var firebaseRef = new Firebase('https://utgall-18619.firebaseio.com/videos/'+videoId);
+    firebaseRef.remove();
   }
 }
 },{"../actions/AppActions":165,"firebase":29}]},{},[172]);
